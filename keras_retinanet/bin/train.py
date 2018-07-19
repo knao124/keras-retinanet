@@ -256,6 +256,25 @@ def create_generators(args, preprocess_image):
             'test',
             **common_args
         )
+    elif args.dataset_type == 'inzai':
+        inzai_classes = {
+            '1_単一食材' : 0,
+            '2_複数食材' : 1,
+            '3_既成品' : 2,
+        }
+        train_generator = PascalVocGenerator(
+            args.inzai_path,
+            'trainval',
+            classses=inzai_classes,
+            transform_generator=transform_generator,
+            **common_args
+        )
+
+        validation_generator = PascalVocGenerator(
+            args.inzai_path,
+            'test',
+            **common_args
+        )
     elif args.dataset_type == 'csv':
         train_generator = CSVGenerator(
             args.annotations,
@@ -355,6 +374,9 @@ def parse_args(args):
 
     pascal_parser = subparsers.add_parser('pascal')
     pascal_parser.add_argument('pascal_path', help='Path to dataset directory (ie. /tmp/VOCdevkit).')
+
+    inzai_parser = subparsers.add_parser('inzai')
+    inzai_parser.add_argument('inzai_path', help='Path to dataset directory (ie. /tmp/INZAIFOODdevkit).')
 
     kitti_parser = subparsers.add_parser('kitti')
     kitti_parser.add_argument('kitti_path', help='Path to dataset directory (ie. /tmp/kitti).')
