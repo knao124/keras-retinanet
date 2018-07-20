@@ -11,9 +11,26 @@ inzai_classes = {
 
 class InzaiVocGenerator(PascalVocGenerator):
 
-    def __init__(self, data_dir, set_name, **kwargs):
-        super(InzaiVocGenerator, self).__init__(data_dir, set_name, classes=inzai_classes, **kwargs)
+    def __init__(
+        self,
+        data_dir,
+        set_name,
+        classes=inzai_classes,
+        image_extension='.jpg',
+        skip_truncated=False,
+        skip_difficult=False,
+        **kwargs
+    ):
+        self.data_dir             = data_dir
+        self.set_name             = set_name
+        self.classes              = classes
+        self.image_names          = [l.strip() for l in open(os.path.join(data_dir, 'ImageSets', 'Main', set_name + '.txt')).readlines()]
+        self.image_extension      = image_extension
+        self.skip_truncated       = skip_truncated
+        self.skip_difficult       = skip_difficult
 
-        # spaceが入ってるfilenameに対応する
-        filepath = os.path.join(data_dir, 'ImageSets', 'Main', set_name + '.txt')
-        self.image_names = [l.strip() for l in open(filepath).readlines()]
+        self.labels = {}
+        for key, value in self.classes.items():
+            self.labels[value] = key
+
+        super(InzaiVocGenerator, self).__init__(**kwargs)
