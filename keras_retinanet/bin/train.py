@@ -42,6 +42,7 @@ from ..preprocessing.csv_generator import CSVGenerator
 from ..preprocessing.kitti import KittiGenerator
 from ..preprocessing.open_images import OpenImagesGenerator
 from ..preprocessing.pascal_voc import PascalVocGenerator
+from ..preprocessing.inzai_voc import InzaiVocGenerator
 from ..utils.anchors import make_shapes_callback
 from ..utils.keras_version import check_keras_version
 from ..utils.model import freeze as freeze_model
@@ -257,20 +258,14 @@ def create_generators(args, preprocess_image):
             **common_args
         )
     elif args.dataset_type == 'inzai':
-        inzai_classes = {
-            '1_単一食材' : 0,
-            '2_複数食材' : 1,
-            '3_既成品' : 2,
-        }
-        train_generator = PascalVocGenerator(
+        train_generator = InzaiVocGenerator(
             args.inzai_path,
             'trainval',
-            classses=inzai_classes,
             transform_generator=transform_generator,
             **common_args
         )
 
-        validation_generator = PascalVocGenerator(
+        validation_generator = InzaiVocGenerator(
             args.inzai_path,
             'test',
             **common_args
