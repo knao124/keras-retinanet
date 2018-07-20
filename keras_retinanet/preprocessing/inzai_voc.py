@@ -33,4 +33,4 @@ class InzaiVocGenerator(PascalVocGenerator):
         for key, value in self.classes.items():
             self.labels[value] = key
 
-        super(InzaiVocGenerator, self).__init__(data_dir, set_name, **kwargs)
+        super(PascalVocGenerator, self).__init__(**kwargs)
